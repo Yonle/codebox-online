@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title name="title">CodeBox Online</title>
+    <meta name="description" content="Type & see HTML code result in realtime with your friend.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+ 
+<body>
+<dir id="codebox">
+ <span id="cdbox_title">CodeBox</span><br>
+ <span id="cdbox_hidebutton" onclick="hide_cdbox()">Hide</span><br>
+ <textarea id="input" placeholder="Type your HTML Code here...."></textarea>
+</dir>
+<span id="cdbox_showbutton" onclick="show_cdbox()">
+     CodeBox
+</span>
+<span id="status">Connecting...</span>
+<span id="box"><h1>CodeBox Online</h1>Type & see HTML code result in realtime with your friend.<br><br>And This is your Preview Screen.<br>If you type something on CodeBox, This Text will changed. <br><br>Press the <b>Hide</b> button located next to CodeBox to hide the CodeBox window.<br><br>Your last session is saved in your Socket.io server, But if your server is restart, Your last session will removed. But, You can save it by change something on Server, Like save to File blablabla....</span>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>
+<style>
+  #codebox {
+    z-index: 1;
+    position: fixed;
+    width: 273px;
+    background-color: white;
+    height: 210px;
+    border: solid;
+    border-radius: 2px;
+    bottom: 7px;
+    right: 10px;
+    display: block;
+  }
+  #cdbox_title {
+    z-index: 2;
+    position: absolute;
+    left: 4px;
+    top: 0;
+  }
+  #cdbox_hidebutton {
+    z-index: 2;
+    position: absolute;
+    right: 4px;
+    border: solid;
+    border-radius: 3px;
+    width: 40px;
+    height: 15px;
+    top: 0;
+    text-align: center;
+  }
+  #cdbox_showbutton {
+    z-index: 1;
+    position: fixed;
+    width: 105px;
+    height: 20px;
+    background-color: white;
+    border: solid;
+    border-radius: 5px;
+    bottom: 7px;
+    right: 10px;
+    display: none;
+    text-align: center;
+  }
+  #input {
+    z-index: 2;
+    position: fixed;
+    width: 300px;
+    background-color: white;
+    height: 180px;
+    border: solid;
+    border-radius: 2px;
+    bottom: 28px;
+    right: 15px;
+  }
+  #box {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+  }
+  #status {
+    z-index: 4;
+    position: fixed;
+    width: 110px;
+    height: 20px;
+    bottom: 10px;
+    left: 10px;
+    border: solid;
+    color: purple;
+    border-radius: 4px;
+    background-color: white;
+    display: block;
+  }
+</style>
+</html>
