@@ -21,6 +21,14 @@ socket.on('disconnect', () => {
  status.style['color'] = 'purple'
  status.innerHTML = "Reconnecting...."
 })
+socket.on('reconnect', () => {
+ var status = document.getElementById('status')
+ status.style['color'] = 'green'
+ status.innerHTML = "Connected"
+ setTimeout(() => {
+  status.style.display = 'none'
+ }, 3000)
+})
 
 
 function hide_cdbox () {
