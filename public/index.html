@@ -30,7 +30,7 @@ document.getElementById('input').addEventListener('input', () => {
 })
 socket.on('connect', () => {
  var status = document.getElementById('status')
- 
+ status.style.display = "block" 
  status.style['color'] = 'green'
  status.innerHTML = "Connected"
  show()
@@ -44,14 +44,15 @@ socket.on('global', data => {
 })
 socket.on('disconnect', () => {
  var status = document.getElementById('status')
+ status.style.display = "block"
  status.style['color'] = 'purple'
  status.innerHTML = "Reconnecting...."
 })
 socket.on('reconnect', () => {
  var status = document.getElementById('status')
+ status.style.display = "block"
  status.style['color'] = 'green'
  status.innerHTML = "Connected"
- show()
  setTimeout(() => {
   status.style.display = 'none'
  }, 3000)
@@ -67,9 +68,13 @@ function show_cdbox () {
 codebox.style.display = 'block';
 document.getElementById('cdbox_showbutton').style.display = 'none';
 }
+
+var isOnline = false
 function show() {
+if (isOnline) return;
 document.getElementById('codebox').style.display = 'block';
 document.getElementById('box').style.display = 'block';
+isOnline = true;
 }
 </script>
 <style>
@@ -91,7 +96,7 @@ document.getElementById('box').style.display = 'block';
     position: absolute;
     left: 4px;
     top: 0;
-    background-color;
+    background-color: white;
   }
   #cdbox_hidebutton {
     z-index: 2;
@@ -138,8 +143,9 @@ document.getElementById('box').style.display = 'block';
   }
   #status {
     z-index: 4;
+    font-family: helvetica;
     position: fixed;
-    width: 110px;
+    width: 120px;
     height: 20px;
     bottom: 10px;
     left: 10px;
