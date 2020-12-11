@@ -1,6 +1,6 @@
 {
   "name": "codebox-online",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "Type & see HTML code result in realtime with your friend.",
   "main": "index.js",
   "scripts": {
