@@ -9,6 +9,13 @@
 </head>
  
 <body>
+<div id="nowLoading">
+<center>
+<br>
+<img src="CodeBox.png" id="logo">
+<h3>Now Loading....</h3>
+</center>
+</div>
 <dir id="codebox">
  <span id="cdbox_title">CodeBox</span><br>
  <span id="cdbox_hidebutton" onclick="hide_cdbox()">Hide</span><br>
@@ -20,15 +27,20 @@
 <span id="status">Connecting...</span>
 <span id="box"><h1>CodeBox Online</h1>Type & see HTML code result in realtime with your friend.<br><br>And This is your Preview Screen.<br>If you type something on CodeBox, This Text will changed. <br><br>Press the <b>Hide</b> button located next to CodeBox to hide the CodeBox window.<br><br>Your last session is saved in your Socket.io server, But if your server is restart, Your last session will removed. But, You can save it by change something on Server, Like save to File blablabla....</span>
 </body>
-<script src="/socket.io/socket.io.js"></script>
 <script>
-const socket = io()
 const codebox = document.getElementById('codebox');
+const host = location.origin.replace(/^http/, 'ws')
+var socket;
+
 document.getElementById('input').addEventListener('input', () => {
   document.getElementById('box').innerHTML = document.getElementById('input').value
-  socket.emit('input', document.getElementById('input').value)
+   if (socket) socket.send(document.getElementById('input').value)
 })
-socket.on('connect', () => {
+
+function connect() {
+socket = new WebSocket(host);
+
+socket.addEventListener('open', () => {
  var status = document.getElementById('status')
  status.style.display = "block" 
  status.style['color'] = 'green'
@@ -38,25 +50,28 @@ socket.on('connect', () => {
   status.style.display = 'none'
  }, 3000)
 })
-socket.on('global', data => {
+socket.addEventListener('message', ({ data }) => {
+ if (data === document.getElementById('input').value) return;
   document.getElementById('input').value = data
   document.getElementById('box').innerHTML = data
 })
-socket.on('disconnect', () => {
+socket.addEventListener('close', () => {
  var status = document.getElementById('status')
  status.style.display = "block"
  status.style['color'] = 'purple'
  status.innerHTML = "Reconnecting...."
+ connect();
 })
-socket.on('reconnect', () => {
+socket.addEventListener('error', (err) => {
  var status = document.getElementById('status')
  status.style.display = "block"
- status.style['color'] = 'green'
- status.innerHTML = "Connected"
- setTimeout(() => {
-  status.style.display = 'none'
- }, 3000)
-})
+ status.style['color'] = 'red'
+ status.innerHTML = "Error"
+ console.error(err);
+ socket.close();
+});
+
+}
 
 
 function hide_cdbox () {
@@ -70,12 +85,18 @@ document.getElementById('cdbox_showbutton').style.display = 'none';
 }
 
 var isOnline = false
+
 function show() {
 if (isOnline) return;
 document.getElementById('codebox').style.display = 'block';
 document.getElementById('box').style.display = 'block';
+document.getElementById('nowLoading').style.display = 'none';
 isOnline = true;
 }
+
+window.addEventListener('load', function() {
+ connect();
+});
 </script>
 <style>
   #codebox {
@@ -123,6 +144,16 @@ isOnline = true;
     right: 10px;
     display: none;
     text-align: center;
+  }
+  #nowLoading {
+    position: absolute;
+    top: 30vh;
+    border: solid;
+    display: block;
+    border-radius: 1px;
+  }
+  #logo {
+    width: 71%;
   }
   #input {
     z-index: 2;
