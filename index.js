@@ -13,9 +13,11 @@ server.listen(3000, function () {
 app.use(require('express').static('public'));
 
 wss.broadcast = function (data, socket) {
-     wss.clients.forEach(function (client) {
-       if (client === socket) return;
-           client.send(data)
+    wss.clients.forEach(function (client) {
+     if (client === socket) return;
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
      });
 }
 
